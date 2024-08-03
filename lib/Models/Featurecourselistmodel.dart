@@ -13,10 +13,12 @@ class Featurecourselist {
 
   factory Featurecourselist.fromJson(Map<String, dynamic> json) =>
       Featurecourselist(
-        status: json["status"],
-        message: json["message"],
-        data: List<CourseList>.from(
-            json["data"].map((x) => CourseList.fromJson(x))),
+        status: json["status"] ?? false,
+        message: json["message"] ?? '',
+        data: json["data"] != null
+            ? List<CourseList>.from(
+                json["data"].map((x) => CourseList.fromJson(x)))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,15 +52,17 @@ class CourseList {
   });
 
   factory CourseList.fromJson(Map<String, dynamic> json) => CourseList(
-        universityId: json["universityId"],
-        courseTitle: json["courseTitle"],
-        courseFee: json["courseFee"],
-        images: List<String>.from(json["images"].map((x) => x)),
-        country: countryValues.map[json["Country"]]!,
-        state: stateValues.map[json["State"]]!,
-        city: cityValues.map[json["city"]]!,
-        universityName: json["universityName"],
-        courseId: json["courseId"],
+        universityId: json["universityId"] ?? 0,
+        courseTitle: json["courseTitle"] ?? 'No Title',
+        courseFee: json["courseFee"] ?? 'No Fee',
+        images: json["images"] != null
+            ? List<String>.from(json["images"].map((x) => x as String))
+            : [],
+        country: countryValues.map[json["Country"]] ?? Country.INDIA_91,
+        state: stateValues.map[json["State"]] ?? CourseState.KERALA,
+        city: cityValues.map[json["city"]] ?? City.ADUR,
+        universityName: json["universityName"] ?? 'No University',
+        courseId: json["courseId"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

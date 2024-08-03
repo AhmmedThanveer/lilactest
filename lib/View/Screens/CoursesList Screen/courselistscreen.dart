@@ -75,7 +75,7 @@ class _FeaturedcourselistScreenState extends State<FeaturedcourselistScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0.5,
+        // elevation: 0.5,
         centerTitle: true,
         leading: const Icon(Icons.arrow_back_ios_rounded),
         title: const Text(
@@ -139,8 +139,8 @@ class _FeaturedcourselistScreenState extends State<FeaturedcourselistScreen> {
                   MaterialPageRoute(
                     // ignore: prefer_const_constructors
                     builder: (context) => Coursedetailscreen(
-                      courseId: 25,
-                      universityId: 12,
+                      courseId: course.courseId!,
+                      universityId: course.universityId!,
                     ),
                   ),
                 );

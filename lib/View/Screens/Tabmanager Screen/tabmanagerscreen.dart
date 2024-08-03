@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lilacmachinetest/View/Screens/CoursesList%20Screen/featuredcourselistscreen.dart';
+import 'package:lilacmachinetest/View/Screens/CoursesList%20Screen/courselistscreen.dart';
 import 'package:lilacmachinetest/View/Screens/Home%20Screen/homescreen.dart';
 
 class Tabmanagerscreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class _TabmanagerscreenState extends State<Tabmanagerscreen> {
   ];
   // Define the screens for each tab
   List<Widget> screens = [
-    HomeScreen(),
+    const HomeScreen(),
     AbcScreen(),
     SearchScreen(),
     FeaturedcourselistScreen(),

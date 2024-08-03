@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class CoursedetailModel {
   bool status;
   String message;
-  Data data;
+  CourseData data;
 
   CoursedetailModel({
     required this.status,
@@ -11,9 +13,11 @@ class CoursedetailModel {
 
   factory CoursedetailModel.fromJson(Map<String, dynamic> json) =>
       CoursedetailModel(
-        status: json["status"],
-        message: json["message"],
-        data: Data.fromJson(json["data"]),
+        status: json["status"] ?? false,
+        message: json["message"] ?? '',
+        data: json["data"] != null
+            ? CourseData.fromJson(json["data"])
+            : CourseData.empty(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -23,40 +27,34 @@ class CoursedetailModel {
       };
 }
 
-class Data {
+class CourseData {
   int courseId;
   String courseName;
   String courseDescription;
-  String courseSyllabus;
-  String courseSyllabusPdf;
+  String? courseSyllabusPdf; // Nullable field
   String courseLevel;
   String courseSubject;
   String courseDuration;
   String totalFee;
-  List<CourseIntak> courseIntaks;
-  List<dynamic> courseEligible;
+  List<CourseIntake> courseIntaks;
+  List<CourseEligibility> courseEligible;
   int universityId;
   String universityName;
   String universityCountry;
   String universityState;
   String universityCity;
-  DateTime universityEstablishedYear;
+  String universityEstablishedYear;
   String universityRank;
   int universityInternationalFee;
   String universityBrochure;
   String aboutUniversity;
-  String logoImage;
-  dynamic documentRequired;
-  List<dynamic> eligibileCerteriaEntrance;
-  dynamic eligibileCerteriaFind;
-  String placement;
+  String? logoImage; // Nullable field
 
-  Data({
+  CourseData({
     required this.courseId,
     required this.courseName,
     required this.courseDescription,
-    required this.courseSyllabus,
-    required this.courseSyllabusPdf,
+    this.courseSyllabusPdf,
     required this.courseLevel,
     required this.courseSubject,
     required this.courseDuration,
@@ -73,87 +71,99 @@ class Data {
     required this.universityInternationalFee,
     required this.universityBrochure,
     required this.aboutUniversity,
-    required this.logoImage,
-    required this.documentRequired,
-    required this.eligibileCerteriaEntrance,
-    required this.eligibileCerteriaFind,
-    required this.placement,
+    this.logoImage,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        courseId: json["courseId"],
-        courseName: json["courseName"],
-        courseDescription: json["courseDescription"],
-        courseSyllabus: json["courseSyllabus"],
+  factory CourseData.fromJson(Map<String, dynamic> json) => CourseData(
+        courseId: json["courseId"] ?? 0,
+        courseName: json["courseName"] ?? 'No Course Name',
+        courseDescription: json["courseDescription"] ?? 'No Description',
         courseSyllabusPdf: json["courseSyllabusPdf"],
-        courseLevel: json["courseLevel"],
-        courseSubject: json["courseSubject"],
-        courseDuration: json["CourseDuration"],
-        totalFee: json["totalFee"],
-        courseIntaks: List<CourseIntak>.from(
-            json["courseIntaks"].map((x) => CourseIntak.fromJson(x))),
-        courseEligible:
-            List<dynamic>.from(json["courseEligible"].map((x) => x)),
-        universityId: json["universityId"],
-        universityName: json["universityName"],
-        universityCountry: json["universityCountry"],
-        universityState: json["universityState"],
-        universityCity: json["universityCity"],
+        courseLevel: json["courseLevel"] ?? 'No Level',
+        courseSubject: json["courseSubject"] ?? 'No Subject',
+        courseDuration: json["CourseDuration"] ?? 'No Duration',
+        totalFee: json["totalFee"] ?? 'No Fee',
+        courseIntaks: json["courseIntaks"] != null
+            ? List<CourseIntake>.from(
+                json["courseIntaks"].map((x) => CourseIntake.fromJson(x)))
+            : [],
+        courseEligible: json["courseEligible"] != null
+            ? List<CourseEligibility>.from(json["courseEligible"]
+                .map((x) => CourseEligibility.fromJson(x)))
+            : [],
+        universityId: json["universityId"] ?? 0,
+        universityName: json["universityName"] ?? 'No University',
+        universityCountry: json["universityCountry"] ?? 'No Country',
+        universityState: json["universityState"] ?? 'No State',
+        universityCity: json["universityCity"] ?? 'No City',
         universityEstablishedYear:
-            DateTime.parse(json["universityEstablishedYear"]),
-        universityRank: json["universityRank"],
-        universityInternationalFee: json["universityInternationalFee"],
-        universityBrochure: json["universityBrochure"],
-        aboutUniversity: json["aboutUniversity"],
+            json["universityEstablishedYear"] ?? 'No Date',
+        universityRank: json["universityRank"] ?? 'No Rank',
+        universityInternationalFee: json["universityInternationalFee"] ?? 0,
+        universityBrochure: json["universityBrochure"] ?? 'No Brochure',
+        aboutUniversity: json["aboutUniversity"] ?? 'No About',
         logoImage: json["logoImage"],
-        documentRequired: json["documentRequired"],
-        eligibileCerteriaEntrance:
-            List<dynamic>.from(json["eligibileCerteriaEntrance"].map((x) => x)),
-        eligibileCerteriaFind: json["eligibileCerteriaFind"],
-        placement: json["placement"],
       );
 
   Map<String, dynamic> toJson() => {
         "courseId": courseId,
         "courseName": courseName,
         "courseDescription": courseDescription,
-        "courseSyllabus": courseSyllabus,
         "courseSyllabusPdf": courseSyllabusPdf,
         "courseLevel": courseLevel,
         "courseSubject": courseSubject,
         "CourseDuration": courseDuration,
         "totalFee": totalFee,
         "courseIntaks": List<dynamic>.from(courseIntaks.map((x) => x.toJson())),
-        "courseEligible": List<dynamic>.from(courseEligible.map((x) => x)),
+        "courseEligible":
+            List<dynamic>.from(courseEligible.map((x) => x.toJson())),
         "universityId": universityId,
         "universityName": universityName,
         "universityCountry": universityCountry,
         "universityState": universityState,
         "universityCity": universityCity,
-        "universityEstablishedYear":
-            "${universityEstablishedYear.year.toString().padLeft(4, '0')}-${universityEstablishedYear.month.toString().padLeft(2, '0')}-${universityEstablishedYear.day.toString().padLeft(2, '0')}",
+        "universityEstablishedYear": universityEstablishedYear,
         "universityRank": universityRank,
         "universityInternationalFee": universityInternationalFee,
         "universityBrochure": universityBrochure,
         "aboutUniversity": aboutUniversity,
         "logoImage": logoImage,
-        "documentRequired": documentRequired,
-        "eligibileCerteriaEntrance":
-            List<dynamic>.from(eligibileCerteriaEntrance.map((x) => x)),
-        "eligibileCerteriaFind": eligibileCerteriaFind,
-        "placement": placement,
       };
+
+  factory CourseData.empty() => CourseData(
+        courseId: 0,
+        courseName: 'No Course Name',
+        courseDescription: 'No Description',
+        courseSyllabusPdf: null,
+        courseLevel: 'No Level',
+        courseSubject: 'No Subject',
+        courseDuration: 'No Duration',
+        totalFee: 'No Fee',
+        courseIntaks: [],
+        courseEligible: [],
+        universityId: 0,
+        universityName: 'No University',
+        universityCountry: 'No Country',
+        universityState: 'No State',
+        universityCity: 'No City',
+        universityEstablishedYear: 'No Date',
+        universityRank: 'No Rank',
+        universityInternationalFee: 0,
+        universityBrochure: 'No Brochure',
+        aboutUniversity: 'No About',
+        logoImage: null,
+      );
 }
 
-class CourseIntak {
+class CourseIntake {
   int id;
   String courseId;
   String intakeDate;
   String intakeDurationDate;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String createdAt;
+  String updatedAt;
 
-  CourseIntak({
+  CourseIntake({
     required this.id,
     required this.courseId,
     required this.intakeDate,
@@ -162,13 +172,13 @@ class CourseIntak {
     required this.updatedAt,
   });
 
-  factory CourseIntak.fromJson(Map<String, dynamic> json) => CourseIntak(
-        id: json["id"],
-        courseId: json["courseId"],
-        intakeDate: json["intakeDate"],
-        intakeDurationDate: json["intakeDurationDate"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+  factory CourseIntake.fromJson(Map<String, dynamic> json) => CourseIntake(
+        id: json["id"] ?? 0,
+        courseId: json["courseId"] ?? '',
+        intakeDate: json["intakeDate"] ?? '',
+        intakeDurationDate: json["intakeDurationDate"] ?? '',
+        createdAt: json["createdAt"] ?? '',
+        updatedAt: json["updatedAt"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -176,7 +186,44 @@ class CourseIntak {
         "courseId": courseId,
         "intakeDate": intakeDate,
         "intakeDurationDate": intakeDurationDate,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+      };
+}
+
+class CourseEligibility {
+  int id;
+  String courseId;
+  String board;
+  String boardScore;
+  String createdAt;
+  String updatedAt;
+
+  CourseEligibility({
+    required this.id,
+    required this.courseId,
+    required this.board,
+    required this.boardScore,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory CourseEligibility.fromJson(Map<String, dynamic> json) =>
+      CourseEligibility(
+        id: json["id"] ?? 0,
+        courseId: json["courseId"] ?? '',
+        board: json["board"] ?? '',
+        boardScore: json["boardScore"] ?? '',
+        createdAt: json["createdAt"] ?? '',
+        updatedAt: json["updatedAt"] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "courseId": courseId,
+        "board": board,
+        "boardScore": boardScore,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
       };
 }
